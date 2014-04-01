@@ -1,3 +1,36 @@
+#word greater then 7 guesses
+# milling
+# whizzer
+# buffs
+# cocky
+# home
+# lore
+# losing
+# migs
+# fisher
+# yang
+# uric
+# gooders
+# lined
+# viz
+# hp
+# piqued
+# huger
+# mint
+# forming
+# mulls
+# gout
+# mating
+# zarfs
+# mines
+# gun
+# cuppy
+# waited
+# durn
+# bourn
+# richer
+
+
 #here is my general stragety
 # look at every single word in the possibilites
 # find all words that are possible
@@ -10,15 +43,18 @@
         # as the next best guess
     # will repeat this process until the word is solved
 
+from time import time
 from interface import Interface
 from wordDictionary import WordDict
+from random import randrange
 
 def getHighestLetterCount(wordList, noLetters):
     # no letters represent letters that have already been guessed
+    # example ["daniel","goldie","eek"] e should be returned most used character
     letterCount = {}
     for word in wordList:
         for char in word:
-            if char not in sorted(letterCount.keys()):
+            if char not in letterCount.keys():
                 letterCount[char] = 1
             else:
                 letterCount[char] += 1
@@ -78,29 +114,29 @@ def solveWord(wordDictionary, hangman):
         possibleWords = updatePossibleList(possibleWords, guessedLetters, knownWord)
 
 
-    print(guessedLetters)
+    # print(guessedLetters)
     return hangman.getGuessCount()
 
 wordDictionary = WordDict()
-hangman = Interface("ab")
-print(solveWord(wordDictionary ,hangman))
 
-# textFile = open("wordsEn.txt","r")
-# fullText = textFile.read()
-# textFile.close()
 
-# counter = 0
-# end = 10
-# total = 0.0
-# for word in fullText.split("\n"):
-#     hangman = Interface(word)
-#     print(word)
-#     guesses = solveWord(wordDictionary, hangman)
-#     print(guesses)
-#     total += guesses
-#     counter += 1
-#     if counter > end:
-#         break
+textFile = open("wordsEn.txt","r")
+fullText = textFile.read()
+textFile.close()
 
-# print(total/end)
 
+wordList = fullText.split("\n")
+for i in range(len(wordList)):
+    wordList[i] = wordList[i].lower().replace("'","")    
+
+total = 0.0
+count = 1000
+for i in range(count):
+    word = wordList[randrange(len(wordList))]
+    hangman = Interface(word)
+    guesses = solveWord(wordDictionary, hangman)
+    if guesses > 7:
+        print(word)
+    total += guesses
+
+print(total/count)
